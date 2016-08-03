@@ -21,11 +21,11 @@ public class Potato : MonoBehaviour {
             GetComponent<Rigidbody>().useGravity = false;
             GetComponent<Rigidbody>().velocity = Vector3.zero;
         }
-        //handle if potato bumps into something
+        //handle if potato bumps into something other than shield door
         else
         {
             print("Ouch!");
-            transform.parent = null;
+            //transform.parent = null;
         }
     }
 
