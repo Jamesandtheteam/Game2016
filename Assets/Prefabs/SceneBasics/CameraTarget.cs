@@ -15,7 +15,7 @@ public class CameraTarget : MonoBehaviour {
         gameObject.name = "*CameraTarget";
     }
 
-	void Update () {
+	void LateUpdate () {
       
         if(players == 1)
         {

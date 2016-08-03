@@ -17,7 +17,7 @@ public class Movement : MonoBehaviour {
 	private float c;
 	private bool jumpStopReady;
     private Vector3 fwd;
-    private Animator anim;
+    public Animator anim;
     private float jumpModifier = 1;
 
     private float sprintModifier = 0.5f;
@@ -73,7 +73,7 @@ public class Movement : MonoBehaviour {
             upVel = 0;
 
         //variable jump stop by releasing jump button
-            if (Input.GetButtonUp (jumpButton) && rig.velocity.y > 0 && jumpStopReady) {
+        if (Input.GetButtonUp (jumpButton) && rig.velocity.y > 0 && jumpStopReady) {
 			rig.velocity = new Vector3 (rig.velocity.x, 0, rig.velocity.z);
 			jumpStopReady = false;
 		}
