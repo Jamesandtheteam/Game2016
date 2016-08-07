@@ -53,7 +53,8 @@ public class InputManager : MonoBehaviour {
 
             players[0].GetComponent<Movement>().horizontalAxis = "Keyboard1Horizontal";
             players[0].GetComponent<Movement>().verticalAxis = "Keyboard1Vertical";
-            players[0].GetComponent<Movement>().jumpButton = "Keyboard1Jump";
+            players[0].GetComponent<Movement>().jumpButton = "Space";
+            //players[0].GetComponent<Movement>().jumpButton = "Keyboard1Jump";
             players[0].GetComponent<Movement>().sprint = "Shift";
 
             players[1].GetComponent<Movement>().horizontalAxis = "Keyboard2Horizontal";
