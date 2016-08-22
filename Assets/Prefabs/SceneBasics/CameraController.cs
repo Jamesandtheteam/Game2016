@@ -62,19 +62,17 @@ public class CameraController : MonoBehaviour
         var deadZone = 0.05f;
 
         //take input for revolving around target from right analog of controller and from mouse
-        horizontalX += (Input.GetAxis("ControllerClicks") + Input.GetAxis("Mouse X")) * XInputSensitivity;
-
-        /* //TAKEN OUT FOR ORTHOGRAPHIC TEST
+        horizontalX += (Input.GetAxis("Controller1HorizontalR") + Input.GetAxis("Mouse X")) * XInputSensitivity;
 
 		float x = Camera.main.transform.localEulerAngles.x;
 
 		//cam down
-		if(Input.GetAxis ("Mouse Y") > 0 && !(250 < x && x < 280))
-			verticalY -= Input.GetAxis ("Mouse Y") * YInputSensitivity;
+		if(Input.GetAxis ("Controller1VerticalR") > 0 && !(250 < x && x < 280))
+			verticalY -= Input.GetAxis ("Controller1VerticalR") * YInputSensitivity;
 		//cam up
-		if(Input.GetAxis ("Mouse Y") < 0 && !(60 < x && x < 90))
-			verticalY -= Input.GetAxis ("Mouse Y") * YInputSensitivity;
-        */
+		if(Input.GetAxis ("Controller1VerticalR") < 0 && !(60 < x && x < 90))
+			verticalY -= Input.GetAxis ("Controller1VerticalR") * YInputSensitivity;
+        
 
         if (Mathf.Abs(Input.GetAxis("Mouse ScrollWheel")) > deadZone)
         {
