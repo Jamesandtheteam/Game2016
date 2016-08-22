@@ -45,15 +45,17 @@ public class Movement : MonoBehaviour {
 
 	//check if grounded
 	void OnTriggerStay(Collider c){
-        if(!c.isTrigger)
-		grounded = true;
-        jumpModifier = 1;
-        //handle standing on slopes
-
+        if (!c.isTrigger && c.tag == "Jumpable")
+        {
+            grounded = true;
+            jumpModifier = 1;
+            //handle standing on slopes
+        }
     }
     //handle jump stop ready
     void OnTriggerEnter(Collider c){
         jumpStopReady = false;
+        jumpModifier = 1;
     }
 	void OnTriggerExit(Collider c){
 		grounded = false;
@@ -138,5 +140,13 @@ public class Movement : MonoBehaviour {
             targetSprint = 2;
         }
         sprintModifier = Mathf.Lerp(sprintModifier, targetSprint, Time.deltaTime * 5);
+    }
+
+    public void death()
+    {
+        rig.constraints = RigidbodyConstraints.None;
+        rig.velocity = Vector3.zero;
+        GetComponent<Renderer>().material.color = Color.red;
+        this.enabled = false;
     }
 }

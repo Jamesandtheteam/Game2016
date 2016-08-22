@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class OffPlate : MonoBehaviour {
+public class Plate : MonoBehaviour {
     public GameObject targetObjOff;
     public GameObject targetObjOn;
 
