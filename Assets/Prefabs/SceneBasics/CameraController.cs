@@ -33,11 +33,15 @@ public class CameraController : MonoBehaviour
     private Vector3 desiredPosition = Vector3.zero;
     private float desiredDistance = 0f;
 
+    [Range(1, 4)]
+    public int targetPlayer;
+
     void Awake()
     {
         Instance = this;
         if (targetLookAt == null)
             print("targetLookAt in null on Main Camera");
+        
     }
 
     void Start()
@@ -62,16 +66,16 @@ public class CameraController : MonoBehaviour
         var deadZone = 0.05f;
 
         //take input for revolving around target from right analog of controller and from mouse
-        horizontalX += (Input.GetAxis("Controller1HorizontalR") + Input.GetAxis("Mouse X")) * XInputSensitivity;
+        horizontalX += (Input.GetAxis("Controller" + targetPlayer.ToString() + "HorizontalR") + Input.GetAxis("Mouse X")) * XInputSensitivity;
 
-		float x = Camera.main.transform.localEulerAngles.x;
+        float x = GameObject.Find("Camera" + targetPlayer.ToString()).transform.localEulerAngles.x;
 
-		//cam down
-		if(Input.GetAxis ("Controller1VerticalR") > 0 && !(250 < x && x < 280))
-			verticalY -= Input.GetAxis ("Controller1VerticalR") * YInputSensitivity;
+        //cam down
+        if (Input.GetAxis ("Controller" + targetPlayer.ToString() + "VerticalR") > 0 && !(250 < x && x < 280))
+			verticalY -= Input.GetAxis ("Controller" + targetPlayer.ToString() + "VerticalR") * YInputSensitivity;
 		//cam up
-		if(Input.GetAxis ("Controller1VerticalR") < 0 && !(60 < x && x < 90))
-			verticalY -= Input.GetAxis ("Controller1VerticalR") * YInputSensitivity;
+		if(Input.GetAxis ("Controller" + targetPlayer.ToString() + "VerticalR") < 0 && !(60 < x && x < 90))
+			verticalY -= Input.GetAxis ("Controller" + targetPlayer.ToString() +  "VerticalR") * YInputSensitivity;
         
 
         if (Mathf.Abs(Input.GetAxis("Mouse ScrollWheel")) > deadZone)

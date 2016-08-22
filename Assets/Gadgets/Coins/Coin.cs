@@ -3,6 +3,11 @@ using System.Collections;
 
 public class Coin : MonoBehaviour {
 
+    void Awake()
+    {
+        gameObject.hideFlags = HideFlags.HideInHierarchy;
+    }
+
 	void FixedUpdate ()
     {
         transform.localEulerAngles = transform.localEulerAngles + new Vector3(0, 0, -7);

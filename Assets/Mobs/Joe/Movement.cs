@@ -35,10 +35,13 @@ public class Movement : MonoBehaviour {
     [HideInInspector]
     public string sprint;
 
+    [Range(1, 4)]
+    public int playerNumber;
+
     void Awake(){
 		rig = GetComponent<Rigidbody> ();
-		cam = Camera.main;
-		xFixed = GameObject.Find ("X Fixed");
+        cam = GameObject.Find("Camera" + playerNumber.ToString()).GetComponent<Camera>();
+		xFixed = GameObject.Find ("X Fixed" + playerNumber.ToString());
         if(anim != null)
         anim = transform.GetChild(0).GetComponent<Animator>();
 	}
