@@ -34,7 +34,9 @@ public class Lurker : MonoBehaviour {
         }
         targetObj = tMin.gameObject;
 
-        transform.position = Vector3.MoveTowards(transform.position, targetObj.transform.position, Time.fixedDeltaTime * speed);
+        transform.LookAt(targetObj.transform.position);
+
+        rig.velocity = transform.forward * speed;
 
         //look toward movement
         fwd = new Vector3(rig.velocity.x, 0, rig.velocity.z);

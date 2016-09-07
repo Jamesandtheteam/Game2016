@@ -3,7 +3,7 @@ using System.Collections;
 
 public class TouchSound : MonoBehaviour {
     public bool playerOnly;
-    public AudioClip audio;
+    public AudioClip _audio;
     [Range(0, 1)]
     public float volume;
 
@@ -14,7 +14,7 @@ public class TouchSound : MonoBehaviour {
 
         GetComponent<AudioSource>().playOnAwake = false;
         GetComponent<AudioSource>().volume = volume;
-        GetComponent<AudioSource>().clip = audio;
+        GetComponent<AudioSource>().clip = _audio;
     }
 
     void OnCollisionEnter(Collision col)
