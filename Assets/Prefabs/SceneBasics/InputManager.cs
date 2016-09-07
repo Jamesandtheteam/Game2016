@@ -129,7 +129,7 @@ public class InputManager : MonoBehaviour {
             players[3].GetComponent<Movement>().jumpButton = "Controller4A";
             players[3].GetComponent<Movement>().sprint = "Controller4RTLT";
 
-            print("FourControllers set");
+            //print("FourControllers set");
             fourControllers = false;
         }
 

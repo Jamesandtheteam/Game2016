@@ -19,6 +19,8 @@ public class Movement : MonoBehaviour {
     private Vector3 fwd;
     public Animator anim;
     private float jumpModifier = 1;
+    private RaycastHit rch;
+    private float colHeight;
 
     private float sprintModifier = 0.5f;
     private float targetSprint;
@@ -44,27 +46,8 @@ public class Movement : MonoBehaviour {
 		xFixed = GameObject.Find ("X Fixed" + playerNumber.ToString());
         if(anim != null)
         anim = transform.GetChild(0).GetComponent<Animator>();
-	}
-
-	//check if grounded
-	void OnTriggerStay(Collider c){
-        if (!c.isTrigger && c.tag == "Jumpable")
-        {
-            grounded = true;
-            jumpModifier = 1;
-            //handle standing on slopes
-        }
+        colHeight = GetComponent<Collider>().bounds.extents.y;
     }
-    //handle jump stop ready
-    void OnTriggerEnter(Collider c){
-        jumpStopReady = false;
-        jumpModifier = 1;
-    }
-	void OnTriggerExit(Collider c){
-		grounded = false;
-        jumpModifier = 0.125f;
-		upVel = 0;
-	}
 		
 	void Update(){
         //check for jump input
@@ -95,8 +78,25 @@ public class Movement : MonoBehaviour {
     }
 
 	void FixedUpdate () {
-        //make sure horizontal speed doesn't grow exponentially
-        if (grounded)
+        //check if grounded
+        //Debug.DrawRay(transform.position, Vector3.up * GetComponent<Collider>().bounds.extents.y, Color.green);
+
+        if (Physics.Raycast(transform.position, -Vector3.up, out rch))
+        {
+            if(rch.distance <= colHeight + 0.1f)
+            {
+                grounded = true;
+                jumpModifier = 1;
+            }
+            else
+            {
+                grounded = false;
+                jumpModifier = 0.125f;
+            }
+        }
+
+            //make sure horizontal speed doesn't grow exponentially
+            if (grounded)
         rig.velocity = new Vector3(0, rig.velocity.y, 0);
             
 
