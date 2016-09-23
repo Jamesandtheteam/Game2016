@@ -4,6 +4,7 @@ using System.Collections;
 public class Potato : MonoBehaviour {
     private float t = 10;
     private GameObject throwGuide;
+    public Vector3 offset;
 
     void Awake()
     {
@@ -16,7 +17,7 @@ public class Potato : MonoBehaviour {
         if (col.tag == "Player" && t > 0.25f)
         {
             transform.parent = col.gameObject.transform;
-            transform.localPosition = new Vector3(0, 1.75f, 0);
+            transform.localPosition = offset;
             transform.localEulerAngles = Vector3.zero;
             GetComponent<Rigidbody>().useGravity = false;
             GetComponent<Rigidbody>().velocity = Vector3.zero;
@@ -32,8 +33,8 @@ public class Potato : MonoBehaviour {
     void Update()
     {
         //fix position of potato
-        if(transform.localPosition != new Vector3(0, 1.75f, 0) && transform.parent != null)
-            transform.localPosition = new Vector3(0, 1.75f, 0);
+        if(transform.localPosition != offset && transform.parent != null)
+            transform.localPosition = offset;
 
         //fix rotation of potato
         if(transform.localEulerAngles != Vector3.zero && transform.parent != null)

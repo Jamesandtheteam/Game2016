@@ -36,7 +36,7 @@ public class Lurker : MonoBehaviour {
 
         transform.LookAt(targetObj.transform.position);
 
-        rig.velocity = transform.forward * speed;
+        rig.velocity = new Vector3((transform.forward * speed).x, rig.velocity.y, (transform.forward * speed).z);
 
         //look toward movement
         fwd = new Vector3(rig.velocity.x, 0, rig.velocity.z);

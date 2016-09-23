@@ -18,12 +18,17 @@ public class Movement : MonoBehaviour {
 	private bool jumpStopReady;
     private Vector3 fwd;
     public Animator anim;
-    private float jumpModifier = 1;
     private RaycastHit rch;
     private float colHeight;
-
-    private float sprintModifier = 0.5f;
+    private float slopeAngle;
     private float targetSprint;
+    private float hInput;
+    private float vInput;
+
+    private float jumpModifier = 1;
+    private float slopeModifier = 1;
+    private float sprintModifier = 0.5f;
+    
 
     //input preferences
     [HideInInspector]
@@ -45,11 +50,15 @@ public class Movement : MonoBehaviour {
         cam = GameObject.Find("Camera" + playerNumber.ToString()).GetComponent<Camera>();
 		xFixed = GameObject.Find ("X Fixed" + playerNumber.ToString());
         if(anim != null)
-        anim = transform.GetChild(0).GetComponent<Animator>();
+            anim = transform.GetChild(0).GetComponent<Animator>();
         colHeight = GetComponent<Collider>().bounds.extents.y;
     }
 		
 	void Update(){
+        //get joystick input
+        hInput = Input.GetAxis(horizontalAxis);
+        vInput = Input.GetAxis(verticalAxis);
+
         //check for jump input
         if (Input.GetButtonDown (jumpButton) && grounded && upVel == 0) {
 			upVel = jumpHeight * 10;
@@ -79,34 +88,51 @@ public class Movement : MonoBehaviour {
 
 	void FixedUpdate () {
         //check if grounded
-        //Debug.DrawRay(transform.position, Vector3.up * GetComponent<Collider>().bounds.extents.y, Color.green);
-
         if (Physics.Raycast(transform.position, -Vector3.up, out rch))
         {
-            if(rch.distance <= colHeight + 0.1f)
+            //get slope of object underneath player
+            slopeAngle = Vector3.Angle(rch.normal, Vector3.up);
+            
+            //if raycast down detects object below player's feet
+            if (rch.distance <= colHeight + 0.3f)
             {
                 grounded = true;
                 jumpModifier = 1;
             }
+            //if raycast down hits nothing within distance
             else
             {
                 grounded = false;
                 jumpModifier = 0.125f;
+                slopeAngle = 0;
             }
         }
+        //if raycast down hits nothing at any distance
+        else
+        {
+            grounded = false;
+            jumpModifier = 0.125f;
+            slopeAngle = 0;
+        }
 
-            //make sure horizontal speed doesn't grow exponentially
-            if (grounded)
-        rig.velocity = new Vector3(0, rig.velocity.y, 0);
+        //creates slope modifier if going uphill
+        if (rig.velocity.y > 0)
+            slopeModifier = -(slopeAngle / 90) + 1;
+        else
+            slopeModifier = 1;
+
+        //make sure horizontal speed doesn't grow exponentially
+        if (grounded)
+            rig.velocity = new Vector3(0, rig.velocity.y, 0);
             
 
-		//sideways movement
-		if (Mathf.Abs (Input.GetAxis (horizontalAxis)) > deadZone)
-			rig.velocity += Input.GetAxis (horizontalAxis) * cam.transform.right * speed * sprintModifier * jumpModifier;
+		//sideways movement and applies modifiers
+		if (Mathf.Abs (hInput) > deadZone)
+			rig.velocity += hInput * cam.transform.right * speed * sprintModifier * jumpModifier * slopeModifier;
 
-		//forward and backwards movement
-		if (Mathf.Abs (Input.GetAxis (verticalAxis)) > deadZone)
-			rig.velocity += Input.GetAxis (verticalAxis) * xFixed.transform.forward * speed * sprintModifier * jumpModifier;
+		//forward and backwards movement and applies modifiers
+		if (Mathf.Abs (vInput) > deadZone)
+			rig.velocity += vInput * xFixed.transform.forward * speed * sprintModifier * jumpModifier * slopeModifier;
 
         //jump, or other upward movements
         if (grounded && upVel != 0)
@@ -130,7 +156,7 @@ public class Movement : MonoBehaviour {
 
         //handle gradual sprint (factored into different if statements)
         //check if input is being given and also if player is moving
-        if ((Mathf.Abs(Input.GetAxis(horizontalAxis)) >= deadZone || Mathf.Abs(Input.GetAxis(verticalAxis)) >= deadZone) && (rig.velocity.x != 0 && rig.velocity.z != 0) && targetSprint != 1)
+        if ((Mathf.Abs(hInput) >= deadZone || Mathf.Abs(vInput) >= deadZone) && (rig.velocity.x != 0 && rig.velocity.z != 0) && targetSprint != 1)
             {
                 targetSprint = 1;
             }

@@ -8,7 +8,7 @@ public class KillZone : MonoBehaviour {
 
     void Awake()
     {
-        respawnManager = GameObject.Find("*RespawnManager").GetComponent<RespawnManager>();
+        respawnManager = GameObject.Find("Manager").GetComponent<RespawnManager>();
     }
 
     void OnTriggerEnter (Collider c) {

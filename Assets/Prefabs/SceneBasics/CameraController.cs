@@ -21,6 +21,7 @@ public class CameraController : MonoBehaviour
     public float YMinLimit = -40f;
     public float YMaxLimit = 80f;
     public float yOffset = 2;
+    public float deadZone = 0.5f;
 
     public float horizontalX = 0f;
     public float verticalY = 0f;
@@ -63,10 +64,9 @@ public class CameraController : MonoBehaviour
     {
         //Cursor.lockState = CursorLockMode.Locked;
 
-        var deadZone = 0.05f;
-
         //take input for revolving around target from right analog of controller and from mouse
-        horizontalX += (Input.GetAxis("Controller" + targetPlayer.ToString() + "HorizontalR") + Input.GetAxis("Mouse X")) * XInputSensitivity;
+        if(Mathf.Abs(Input.GetAxis("Controller" + targetPlayer.ToString() + "HorizontalR") * XInputSensitivity) > deadZone)
+            horizontalX += (Input.GetAxis("Controller" + targetPlayer.ToString() + "HorizontalR") * XInputSensitivity);
 
         float x = GameObject.Find("Camera" + targetPlayer.ToString()).transform.localEulerAngles.x;
 

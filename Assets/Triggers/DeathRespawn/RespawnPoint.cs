@@ -8,7 +8,7 @@ public class RespawnPoint : MonoBehaviour {
 
     void Awake()
     {
-        respawnManager = GameObject.Find("*RespawnManager").GetComponent<RespawnManager>();
+        respawnManager = GameObject.Find("Manager").GetComponent<RespawnManager>();
     }
 
 	void OnCollisionEnter(Collision c)
