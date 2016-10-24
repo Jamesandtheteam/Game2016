@@ -5,16 +5,14 @@ public class Lurker : MonoBehaviour {
     private Rigidbody rig;
     private GameObject[] players;
     private Vector3 fwd;
+    private GameObject targetObj;
 
-    public GameObject targetObj;
     public float speed;
+    public float maxTargetDistance;
 
 	void Awake () {
         rig = GetComponent<Rigidbody>();
-
         players = GameObject.FindGameObjectsWithTag("Player");
-
-        speed += Random.Range(-1, 1);
 	}
 	
 	void FixedUpdate () {
@@ -32,7 +30,10 @@ public class Lurker : MonoBehaviour {
                 minDist = dist;
             }
         }
-        targetObj = tMin.gameObject;
+        if (minDist < maxTargetDistance || maxTargetDistance == 0)
+            targetObj = tMin.gameObject;
+        else
+            return;
 
         transform.LookAt(targetObj.transform.position);
 

@@ -11,10 +11,10 @@ public class Potato : MonoBehaviour {
         throwGuide = transform.FindChild("ThrowGuide").gameObject;
     }
 
-	void OnTriggerEnter(Collider col)
+	void OnCollisionEnter(Collision col)
     {
         //pick up potato
-        if (col.tag == "Player" && t > 0.25f)
+        if (col.gameObject.tag == "Player" && t > 0.25f)
         {
             transform.parent = col.gameObject.transform;
             transform.localPosition = offset;

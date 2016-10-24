@@ -11,7 +11,6 @@ public class Movement : MonoBehaviour {
     public float upVel;
 
 	private Rigidbody rig;
-	private Camera cam;
 	private GameObject xFixed;
 	private bool grounded;
 	private float c;
@@ -28,6 +27,7 @@ public class Movement : MonoBehaviour {
     private float jumpModifier = 1;
     private float slopeModifier = 1;
     private float sprintModifier = 0.5f;
+    private float glideModifier = 1;
     
 
     //input preferences
@@ -47,7 +47,6 @@ public class Movement : MonoBehaviour {
 
     void Awake(){
 		rig = GetComponent<Rigidbody> ();
-        cam = GameObject.Find("Camera" + playerNumber.ToString()).GetComponent<Camera>();
 		xFixed = GameObject.Find ("X Fixed" + playerNumber.ToString());
         if(anim != null)
             anim = transform.GetChild(0).GetComponent<Animator>();
@@ -86,53 +85,68 @@ public class Movement : MonoBehaviour {
         }
     }
 
+    //called when player glides uphill when he shouldn't
+    //only problem left with this is that whille player is sliding uphill he can't control movement at all
+    void OnCollisionStay()
+    {
+        if (slopeAngle > 45 && !grounded && rig.velocity.y > 0)
+            glideModifier = 0;
+        else
+            glideModifier = 1;
+    }
+
 	void FixedUpdate () {
         //check if grounded
         if (Physics.Raycast(transform.position, -Vector3.up, out rch))
         {
-            //get slope of object underneath player
-            slopeAngle = Vector3.Angle(rch.normal, Vector3.up);
-            
-            //if raycast down detects object below player's feet
-            if (rch.distance <= colHeight + 0.3f)
+            if (rch.transform.gameObject.GetComponent<Collider>() == false || rch.transform.gameObject.GetComponent<Collider>().isTrigger == false)
             {
-                grounded = true;
-                jumpModifier = 1;
-            }
-            //if raycast down hits nothing within distance
-            else
-            {
-                grounded = false;
-                jumpModifier = 0.125f;
-                slopeAngle = 0;
+                //get slope of object underneath player
+                slopeAngle = Vector3.Angle(rch.normal, Vector3.up);
+
+                //if raycast down detects object below player's feet
+                if (rch.distance <= colHeight + 0.5f)
+                {
+                    grounded = true;
+                    jumpModifier = 1;
+                }
+                //if raycast down hits nothing within distance
+                else
+                {
+                    grounded = false;
+                    jumpModifier = 0.25f;
+                }
             }
         }
         //if raycast down hits nothing at any distance
         else
         {
             grounded = false;
-            jumpModifier = 0.125f;
+            jumpModifier = 0.25f;
             slopeAngle = 0;
         }
 
         //creates slope modifier if going uphill
-        if (rig.velocity.y > 0)
+        if (rig.velocity.y > 0 && grounded)
             slopeModifier = -(slopeAngle / 90) + 1;
         else
             slopeModifier = 1;
 
-        //make sure horizontal speed doesn't grow exponentially
+        //if (slopeAngle > 45 && grounded)
+            //slopeModifier = 0;
+
+        //make sure horizontal speed doesn't grow exponentially if you're grounded
         if (grounded)
             rig.velocity = new Vector3(0, rig.velocity.y, 0);
             
 
 		//sideways movement and applies modifiers
 		if (Mathf.Abs (hInput) > deadZone)
-			rig.velocity += hInput * cam.transform.right * speed * sprintModifier * jumpModifier * slopeModifier;
+			rig.velocity += hInput * xFixed.transform.right * speed * sprintModifier * jumpModifier * slopeModifier * glideModifier;
 
 		//forward and backwards movement and applies modifiers
 		if (Mathf.Abs (vInput) > deadZone)
-			rig.velocity += vInput * xFixed.transform.forward * speed * sprintModifier * jumpModifier * slopeModifier;
+			rig.velocity += vInput * xFixed.transform.forward * speed * sprintModifier * jumpModifier * slopeModifier * glideModifier;
 
         //jump, or other upward movements
         if (grounded && upVel != 0)
@@ -146,7 +160,7 @@ public class Movement : MonoBehaviour {
 		if (c > speed * sprintModifier) {
 			float y = rig.velocity.y;
 			rig.velocity /= (c / speed) / sprintModifier;
-			rig.velocity = new Vector3 (rig.velocity.x, y, rig.velocity.z);
+            rig.velocity = new Vector3(rig.velocity.x, y, rig.velocity.z);
 		}
 
 		//look towards movement		
@@ -156,7 +170,7 @@ public class Movement : MonoBehaviour {
 
         //handle gradual sprint (factored into different if statements)
         //check if input is being given and also if player is moving
-        if ((Mathf.Abs(hInput) >= deadZone || Mathf.Abs(vInput) >= deadZone) && (rig.velocity.x != 0 && rig.velocity.z != 0) && targetSprint != 1)
+        if ((Mathf.Abs(hInput) >= deadZone || Mathf.Abs(vInput) >= deadZone) && (rig.velocity.x != 0 || rig.velocity.z != 0) && targetSprint != 1)
             {
                 targetSprint = 1;
             }
@@ -166,9 +180,9 @@ public class Movement : MonoBehaviour {
             }
         if (Input.GetAxis(sprint) != 0)
         {
-            targetSprint = 2;
+            targetSprint = 1.75f;
         }
-        sprintModifier = Mathf.Lerp(sprintModifier, targetSprint, Time.deltaTime * 5);
+        sprintModifier = Mathf.Lerp(sprintModifier, targetSprint, Time.deltaTime * 2);
     }
 
     public void death()

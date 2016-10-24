@@ -6,7 +6,7 @@ public class Plate : MonoBehaviour {
     public GameObject targetObjOff;
     public GameObject targetObjOn;
 
-    [Header("Times Button Press Objects")]
+    [Header("Timed Button Press Objects")]
     //if timed set time != 0
     public float time;
     public GameObject timedObjOn;
