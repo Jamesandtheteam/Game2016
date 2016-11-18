@@ -42,7 +42,7 @@ public class Lurker : MonoBehaviour {
         //look toward movement
         fwd = new Vector3(rig.velocity.x, 0, rig.velocity.z);
         if (fwd.sqrMagnitude != 0)
-            gameObject.transform.forward = Vector3.Lerp(gameObject.transform.forward, fwd, Time.deltaTime * 10);
+            gameObject.transform.forward = Vector3.Lerp(gameObject.transform.forward, fwd, Time.fixedDeltaTime * 10);
     }
 
 

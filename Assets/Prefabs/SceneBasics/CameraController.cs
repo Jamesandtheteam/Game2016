@@ -8,6 +8,7 @@ public class CameraController : MonoBehaviour
 
 
     public float startDistance = 40f;
+    public float desiredDistance = 0f;
     public float distance = 5f;
     public float distanceMin = 3f;
     public float distanceMax = 10f;
@@ -25,14 +26,14 @@ public class CameraController : MonoBehaviour
     public float horizontalX = 0f;
     public float verticalY = 0f;
 
-    private Transform targetLookAt;
+    public Transform targetLookAt;
+
     private float velX = 0f;
     private float velY = 0f;
     private float velZ = 0f;
     private float velDistance = 0f;
     private Vector3 position = Vector3.zero;
     private Vector3 desiredPosition = Vector3.zero;
-    private float desiredDistance = 0f;
     private GameObject cam;
     private float h;
     private float v;
@@ -78,16 +79,16 @@ public class CameraController : MonoBehaviour
 
         //take input for revolving around target from right analog of controller and from mouse
         if (Mathf.Abs(h * XInputSensitivity) > deadZone)
-            horizontalX += (h * XInputSensitivity) * (Time.deltaTime * 50);
+            horizontalX += (h * XInputSensitivity) * (Time.fixedDeltaTime * 50);
 
         float x = cam.transform.localEulerAngles.x;
 
         //cam down
         if (v > 0 && !(250 < x && x < 280))
-			verticalY -= v * YInputSensitivity * (Time.deltaTime * 50);
+			verticalY -= v * YInputSensitivity * (Time.fixedDeltaTime * 50);
 		//cam up
 		if(v < 0 && !(60 < x && x < 90))
-			verticalY -= v * YInputSensitivity * (Time.deltaTime * 50);
+			verticalY -= v * YInputSensitivity * (Time.fixedDeltaTime * 50);
     }
 
     void CalculateDesiredPosition()

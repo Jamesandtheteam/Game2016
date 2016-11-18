@@ -71,7 +71,7 @@ public class GUImenu : MonoBehaviour {
         {
             if (Vector2.Distance(new Vector2(currentSize[i].x, currentSize[i].y), new Vector2(targetSize[i].x, targetSize[i].y)) > 1)
             {
-                currentSize[i] = Vector2.Lerp(currentSize[i], targetSize[i], Time.fixedDeltaTime * 10);
+                currentSize[i] = Vector2.Lerp(currentSize[i], targetSize[i], Time.deltaTime * 10);
             }
         }
 

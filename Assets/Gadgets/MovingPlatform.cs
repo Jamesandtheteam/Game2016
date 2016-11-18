@@ -19,11 +19,11 @@ public class MovingPlatform : MonoBehaviour {
     void FixedUpdate()
     {
         //check if close (within 0.5)
-        if (new Vector3(Mathf.Round(transform.position.x), Mathf.Round(transform.position.y), Mathf.Round(transform.position.z)) == travelPositions[x])
+        if (Vector3.Distance(transform.position, travelPositions[x]) < 0.5f)
             x++;
         if (x >= travelPositions.Length)
             x = 0;
         Vector3 moveDir = (travelPositions[x] - transform.position).normalized;
-        transform.Translate(moveDir * speed * Time.deltaTime);
+        transform.Translate(moveDir * speed * Time.fixedDeltaTime);
     }
 }
