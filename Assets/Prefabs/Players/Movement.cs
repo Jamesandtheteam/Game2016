@@ -45,13 +45,15 @@ public class Movement : MonoBehaviour {
     [Range(1, 4)]
     private int playerNumber;
 
-    void Awake(){
+    void Awake()
+    {
         playerNumber = int.Parse(name.Substring(gameObject.name.Length - 1, 1));
-        rig = GetComponent<Rigidbody> ();
+        rig = GetComponent<Rigidbody>();
 		xFixed = GameObject.Find ("X Fixed" + playerNumber.ToString());
         if(anim != null)
             anim = transform.GetChild(0).GetComponent<Animator>();
         colHeight = GetComponent<Collider>().bounds.extents.y;
+        print(name + " " + colHeight);
     }
 		
 	void Update(){
@@ -136,7 +138,6 @@ public class Movement : MonoBehaviour {
         //make sure horizontal speed doesn't grow exponentially if you're grounded
         if (grounded)
             rig.velocity = new Vector3(0, rig.velocity.y, 0);
-
 
         //sideways movement and applies modifiers
         if (Mathf.Abs(hInput) > deadZone)

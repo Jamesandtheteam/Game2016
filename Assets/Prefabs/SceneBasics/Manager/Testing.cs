@@ -23,5 +23,6 @@ public class Testing : MonoBehaviour {
             GameObject.Find("Camera3").GetComponent<Camera>().enabled = false;
             GameObject.Find("Camera4").GetComponent<Camera>().enabled = false;
         }
+        //ADD FUNCTION WHERE I CAN CHANGE WHO IM CONTROLLING WITH ONLY ONE CONTROLLER
 	}
 }
