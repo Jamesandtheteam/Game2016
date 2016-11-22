@@ -55,8 +55,7 @@ public class HighFive : MonoBehaviour {
             //if player is currently guest and has died and target player is still alive, revive at the position of the target player
             if(GetComponent<Dead>().enabled == true && targetPlayer.GetComponent<Dead>().enabled != true)
             {
-                transform.position = targetPlayer.transform.position;
-                GetComponent<Dead>().Revive();
+                GetComponent<Dead>().Revive(targetPlayer.transform.position);
                 playerState = state.none;
                 targetPlayer.GetComponent<HighFive>().playerState = state.none;
             }

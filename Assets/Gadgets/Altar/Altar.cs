@@ -49,7 +49,6 @@ public class Altar : MonoBehaviour {
 
     void Revive(GameObject p)
     {
-        p.transform.position = transform.position + revivePositionOffset;
-        p.GetComponent<Dead>().Revive();
+        p.GetComponent<Dead>().Revive(transform.position + revivePositionOffset);
     }
 }

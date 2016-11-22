@@ -53,7 +53,6 @@ public class Movement : MonoBehaviour {
         if(anim != null)
             anim = transform.GetChild(0).GetComponent<Animator>();
         colHeight = GetComponent<Collider>().bounds.extents.y;
-        print(name + " " + colHeight);
     }
 		
 	void Update(){

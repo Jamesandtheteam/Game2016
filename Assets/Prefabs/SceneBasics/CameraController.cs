@@ -73,7 +73,6 @@ public class CameraController : MonoBehaviour
         //Cursor.lockState = CursorLockMode.Locked;
 
         //get vertical and horizontal input
-        
         h = Input.GetAxis("Controller" + targetPlayer.ToString() + "HorizontalR");
         v = Input.GetAxis("Controller" + targetPlayer.ToString() + "VerticalR");
 

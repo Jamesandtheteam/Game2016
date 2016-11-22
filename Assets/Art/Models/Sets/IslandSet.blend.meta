@@ -1,15 +1,37 @@
 fileFormatVersion: 2
-guid: 88421cfd0a736824fb2e12dcc3ae028f
-timeCreated: 1479742070
+guid: f6aedd3e042c57e4f914e8ded0435da8
+timeCreated: 1479744850
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
-    100000: //RootNode
-    400000: //RootNode
-    2300000: //RootNode
-    3300000: //RootNode
+    100000: Cylinder
+    100002: //RootNode
+    100004: Lighthouse
+    100006: LighthouseBase
+    100008: Plane
+    100010: Water
+    400000: Cylinder
+    400002: //RootNode
+    400004: Lighthouse
+    400006: LighthouseBase
+    400008: Plane
+    400010: Water
+    2300000: Cylinder
+    2300002: Lighthouse
+    2300004: LighthouseBase
+    2300006: Plane
+    2300008: Water
+    3300000: Cylinder
+    3300002: Lighthouse
+    3300004: LighthouseBase
+    3300006: Plane
+    3300008: Water
     4300000: Cylinder
+    4300002: Lighthouse
+    4300004: LighthouseBase
+    4300006: Plane
+    4300008: Water
     7400000: Default Take
     9500000: //RootNode
   materials:
