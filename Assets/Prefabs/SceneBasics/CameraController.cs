@@ -92,7 +92,7 @@ public class CameraController : MonoBehaviour
 
     void CalculateDesiredPosition()
     {
-        distance = Mathf.SmoothDamp(distance, desiredDistance, ref velDistance, distanceSmooth);
+        distance = Mathf.SmoothDamp(distance, desiredDistance, ref velDistance, Time.fixedDeltaTime * distanceSmooth);
 
         desiredPosition = CalculatePosition(verticalY, horizontalX, distance);
     }

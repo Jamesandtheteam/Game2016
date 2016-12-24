@@ -3,7 +3,6 @@ using System.Collections;
 
 public class Dead : MonoBehaviour {
     private Rigidbody rig;
-    private GameObject[] players;
     private Transform targetSpawn;
     private int targetSpawnNum;
     private int h;
@@ -11,7 +10,6 @@ public class Dead : MonoBehaviour {
     void Awake()
     {
         rig = GetComponent<Rigidbody>();
-        players = GameObject.FindGameObjectsWithTag("Player");
     }
 
 	void OnEnable ()

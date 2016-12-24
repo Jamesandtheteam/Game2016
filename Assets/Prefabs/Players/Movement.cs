@@ -6,7 +6,6 @@ public class Movement : MonoBehaviour {
 	public float speed = 7;
 	public float jumpHeight = 1.75f;
 
-    //can be used by other scripts
     [HideInInspector]
     public float upVel;
 
@@ -16,7 +15,7 @@ public class Movement : MonoBehaviour {
 	private float c;
 	private bool jumpStopReady;
     private Vector3 fwd;
-    public Animator anim;
+    private Animator anim;
     private RaycastHit rch;
     private float colHeight;
     private float slopeAngle;
@@ -28,7 +27,7 @@ public class Movement : MonoBehaviour {
     private float targetSprint;
     private float sprintModifier = 0.25f;
     private float glideModifier = 1;
-    
+    private float masterModifier;
 
     //input preferences
     [HideInInspector]
@@ -61,8 +60,9 @@ public class Movement : MonoBehaviour {
         vInput = Input.GetAxis(verticalAxis);
 
         //check for jump input
-        if (Input.GetButtonDown (jumpButton) && grounded && upVel == 0) {
-			upVel = jumpHeight * 10;
+        if (Input.GetButtonDown (jumpButton) && grounded)
+        {
+            upVel = jumpHeight;
 			jumpStopReady = true;
 		}
 
@@ -70,11 +70,14 @@ public class Movement : MonoBehaviour {
         if (Input.GetButtonUp(jumpButton))
             upVel = 0;
 
+
         //variable jump stop by releasing jump button
-        if (Input.GetButtonUp (jumpButton) && rig.velocity.y > 0 && jumpStopReady) {
+        if (Input.GetButtonUp (jumpButton) && rig.velocity.y > 0 && jumpStopReady)
+        {
 			rig.velocity = new Vector3 (rig.velocity.x, 0, rig.velocity.z);
 			jumpStopReady = false;
 		}
+        
     }
 
     void LateUpdate()
@@ -88,7 +91,7 @@ public class Movement : MonoBehaviour {
     }
 
     //called when player glides uphill when he shouldn't
-    //only problem left with this is that whille player is sliding uphill he can't control movement at all
+    //only problem left with this is that while player is sliding uphill he can't control movement at all
     void OnCollisionStay()
     {
         if (slopeAngle > 45 && !grounded && rig.velocity.y > 0)
@@ -138,16 +141,19 @@ public class Movement : MonoBehaviour {
         if (grounded)
             rig.velocity = new Vector3(0, rig.velocity.y, 0);
 
+        masterModifier = sprintModifier * jumpModifier * slopeModifier * glideModifier;
+
         //sideways movement and applies modifiers
         if (Mathf.Abs(hInput) > deadZone)
-            rig.velocity += hInput * xFixed.transform.right * speed * sprintModifier * jumpModifier * slopeModifier * glideModifier;
+            rig.velocity += hInput * xFixed.transform.right * speed * masterModifier;
 
         //forward and backwards movement and applies modifiers
         if (Mathf.Abs(vInput) > deadZone)
-            rig.velocity += vInput * xFixed.transform.forward * speed * sprintModifier * jumpModifier * slopeModifier * glideModifier;
+            rig.velocity += vInput * xFixed.transform.forward * speed * masterModifier;
 
         //jump, or other upward movements
-        if (grounded && upVel != 0)
+        //&& GROUNDED
+        if (upVel != 0)
         {
             rig.velocity = new Vector3(rig.velocity.x, upVel, rig.velocity.z);
             upVel = 0;
@@ -164,9 +170,9 @@ public class Movement : MonoBehaviour {
         //look towards movement		
         fwd = new Vector3(rig.velocity.x, 0, rig.velocity.z);
         if (fwd.sqrMagnitude != 0)
-            gameObject.transform.forward = Vector3.Lerp(gameObject.transform.forward, fwd, Time.fixedDeltaTime * 10);
+            gameObject.transform.forward = Vector3.Lerp(gameObject.transform.forward, fwd, Time.fixedDeltaTime * 4);
 
-        //handle gradual sprint (factored into different if statements)
+        //handle gradual sprint
         //check if input is being given and also if player is moving, target sprint = 1
         if ((Mathf.Abs(hInput) >= deadZone || Mathf.Abs(vInput) >= deadZone) && (rig.velocity.x != 0 || rig.velocity.z != 0)) {
            if (Input.GetAxis(sprint) != 0)

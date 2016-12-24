@@ -15,7 +15,7 @@ public class Coin : MonoBehaviour {
 
     void OnTriggerEnter(Collider col)
     {
-        if (col.tag == "Player")
+        if (col.tag == "Player" && GetComponent<Dead>().enabled == false)
             StartCoroutine(Collected());
     }
 
