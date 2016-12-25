@@ -15,7 +15,7 @@ public class CameraTarget : MonoBehaviour {
         gameObject.name = "*CameraTarget";
     }
 
-	void Update () {
+	void LateUpdate () {
       
         if(players == 1)
         {
@@ -50,6 +50,6 @@ public class CameraTarget : MonoBehaviour {
         if (fixedY)
             averagePos = new Vector3(averagePos.x, yPos, averagePos.z);
 
-        transform.position = averagePos;
+        transform.position = averagePos + new Vector3(0, yPos, 0);
 	}
 }

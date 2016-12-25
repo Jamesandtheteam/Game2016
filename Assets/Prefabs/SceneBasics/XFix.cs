@@ -6,7 +6,7 @@ public class XFix : MonoBehaviour {
 	private Camera cam;
 
 	void Awake(){
-		cam = Camera.main;
+        cam = transform.parent.GetComponent<Camera>();
 	}
 
 	void FixedUpdate () {

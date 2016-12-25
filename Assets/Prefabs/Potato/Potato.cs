@@ -4,36 +4,37 @@ using System.Collections;
 public class Potato : MonoBehaviour {
     private float t = 10;
     private GameObject throwGuide;
+    public Vector3 offset;
 
     void Awake()
     {
         throwGuide = transform.FindChild("ThrowGuide").gameObject;
     }
 
-	void OnTriggerEnter(Collider col)
+	void OnCollisionEnter(Collision col)
     {
         //pick up potato
-        if (col.tag == "Player" && t > 0.25f)
+        if (col.gameObject.tag == "Player" && t > 0.25f)
         {
             transform.parent = col.gameObject.transform;
-            transform.localPosition = new Vector3(0, 1.75f, 0);
+            transform.localPosition = offset;
             transform.localEulerAngles = Vector3.zero;
             GetComponent<Rigidbody>().useGravity = false;
             GetComponent<Rigidbody>().velocity = Vector3.zero;
         }
-        //handle if potato bumps into something
+        //handle if potato bumps into something other than shield door
         else
         {
             print("Ouch!");
-            transform.parent = null;
+            //transform.parent = null;
         }
     }
 
     void Update()
     {
         //fix position of potato
-        if(transform.localPosition != new Vector3(0, 1.75f, 0) && transform.parent != null)
-            transform.localPosition = new Vector3(0, 1.75f, 0);
+        if(transform.localPosition != offset && transform.parent != null)
+            transform.localPosition = offset;
 
         //fix rotation of potato
         if(transform.localEulerAngles != Vector3.zero && transform.parent != null)

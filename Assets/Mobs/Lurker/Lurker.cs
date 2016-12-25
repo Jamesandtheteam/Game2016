@@ -1,0 +1,58 @@
+﻿using UnityEngine;
+using System.Collections;
+
+public class Lurker : MonoBehaviour {
+    private Rigidbody rig;
+    private GameObject[] players;
+    private Vector3 fwd;
+    private GameObject targetObj;
+
+    public float speed;
+    public float maxTargetDistance;
+
+	void Awake () {
+        rig = GetComponent<Rigidbody>();
+        players = GameObject.FindGameObjectsWithTag("Player");
+	}
+	
+	void FixedUpdate () {
+        //finds closest object with tag "player" and chases it
+
+        Transform tMin = null;
+        float minDist = Mathf.Infinity;
+        Vector3 currentPos = transform.position;
+        foreach (GameObject t in players)
+        {
+            float dist = Vector3.Distance(t.transform.position, currentPos);
+            if (dist < minDist)
+            {
+                tMin = t.transform;
+                minDist = dist;
+            }
+        }
+        if (minDist < maxTargetDistance || maxTargetDistance == 0)
+            targetObj = tMin.gameObject;
+        else
+            return;
+
+        transform.LookAt(targetObj.transform.position);
+
+        rig.velocity = new Vector3((transform.forward * speed).x, rig.velocity.y, (transform.forward * speed).z);
+
+        //look toward movement
+        fwd = new Vector3(rig.velocity.x, 0, rig.velocity.z);
+        if (fwd.sqrMagnitude != 0)
+            gameObject.transform.forward = Vector3.Lerp(gameObject.transform.forward, fwd, Time.fixedDeltaTime * 10);
+    }
+
+
+
+    void OnCollisionEnter(Collision col)
+    {
+        if(col.gameObject.tag == "Player")
+        {
+            //calls death function
+            col.gameObject.GetComponent<Movement>().death();
+        }
+    }
+}
