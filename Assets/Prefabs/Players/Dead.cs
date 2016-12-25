@@ -80,6 +80,7 @@ public class Dead : MonoBehaviour {
         GameObject.Find("Camera" + name.Substring(gameObject.name.Length - 1, 1)).GetComponent<CameraController>().targetLookAt = transform;
         transform.position = revivePos;
         transform.eulerAngles = Vector3.zero;
+        rig.velocity = Vector3.zero;
         rig.constraints = RigidbodyConstraints.FreezeRotation;
         GetComponent<Renderer>().material.color = Color.white;
         GetComponent<Movement>().enabled = true;

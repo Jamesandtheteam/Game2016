@@ -23,7 +23,7 @@ public class Crusher : MonoBehaviour {
     //crush is triggered on objects with tag of player
     void OnTriggerStay(Collider coll)
     {
-        if (coll.gameObject.tag == "Player" && !retreat)
+        if (coll.gameObject.tag == "Player" && coll.GetComponent<Dead>().enabled != true && !retreat)
             Crush();
     }
 
